@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Voyage Notebook • Learn French</title>
+    <link rel="icon" href="favicon.svg" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="theme-color" content="#f6e9f2" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header class="topbar">
+        <div class="brand">
+          <img id="brandMascot" class="mascot" alt="Mascot" src="assets/mascot-placeholder.png" />
+          <div>
+            <h1>Voyage Notebook</h1>
+            <small id="subtitle">French learning journey</small>
+          </div>
+        </div>
+        <nav class="actions">
+          <button id="langToggle" aria-label="Toggle interface language">EN</button>
+          <button id="themeToggle" aria-label="Toggle theme">☾</button>
+          <button id="muteToggle" aria-label="Toggle sound">🔈</button>
+        </nav>
+      </header>
+
+      <!-- Tabs -->
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="learn">Learn</button>
+        <button class="tab" data-tab="games">Mouse & Cheese</button>
+        <button class="tab" data-tab="review">Quick Review</button>
+        <button class="tab" data-tab="exam">Weekly Exam</button>
+        <button class="tab" data-tab="settings">Settings</button>
+      </nav>
+
+      <!-- Views -->
+      <main>
+        <!-- Dashboard -->
+        <section id="view-dashboard" class="view active" aria-labelledby="Dashboard">
+          <div class="cards">
+            <article class="card kpi">
+              <h3 id="kpi-streak">Streak</h3>
+              <p id="kpi-streak-val">0 🔥</p>
+            </article>
+            <article class="card kpi">
+              <h3 id="kpi-level">Level</h3>
+              <p id="kpi-level-val">1</p>
+            </article>
+            <article class="card kpi">
+              <h3 id="kpi-points">Points</h3>
+              <p id="kpi-points-val">0</p>
+            </article>
+            <article class="card">
+              <h3 id="daily-list-title">Today’s list</h3>
+              <ul id="daily-list" class="list"></ul>
+              <div class="row">
+                <button id="regenList">Regenerate</button>
+                <button id="playAll">▶ Play all</button>
+              </div>
+              <small id="captionArea" class="caption" aria-live="polite"></small>
+            </article>
+            <article class="card">
+              <h3>Progress</h3>
+              <canvas id="progressChart" width="800" height="240" role="img" aria-label="Progress chart"></canvas>
+            </article>
+            <article class="card">
+              <h3>Badges</h3>
+              <div id="badges" class="badges"></div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Learn -->
+        <section id="view-learn" class="view">
+          <div class="learn-nav">
+            <button data-mode="flashcards" class="pill active">Flashcards</button>
+            <button data-mode="quiz" class="pill">Quiz</button>
+            <button data-mode="dictation" class="pill">Dictation</button>
+            <button data-mode="repeat" class="pill">Listen & Repeat</button>
+            <button data-mode="matching" class="pill">Image Matching</button>
+            <button data-mode="cloze" class="pill">Cloze Cards</button>
+            <button data-mode="pronounce" class="pill">Pronunciation</button>
+          </div>
+
+          <!-- Activity container -->
+          <div id="activity" class="activity">
+            <!-- Filled dynamically -->
+          </div>
+        </section>
+
+        <!-- Games -->
+        <section id="view-games" class="view">
+          <div class="card">
+            <h3>Mouse & Cheese</h3>
+            <div class="row">
+              <button id="gameStart">Start</button>
+              <button id="gameSlow">Slow</button>
+              <button id="gameFast">Fast</button>
+              <span id="gameScore" class="score">Score 0</span>
+              <span id="gameLives" class="lives">❤❤❤</span>
+            </div>
+            <canvas id="snakeCanvas" width="360" height="480" class="snake" aria-label="Mouse and cheese game"></canvas>
+            <div class="row">
+              <span id="gameWord" class="bigword"></span>
+              <span id="gameIPA" class="ipa"></span>
+            </div>
+            <div class="row">
+              <button id="gameRepeat">Repeat</button>
+              <button id="gameSlowRead">Slow</button>
+            </div>
+            <small id="gameSubtitle" class="caption" aria-live="polite"></small>
+          </div>
+        </section>
+
+        <!-- Quick Review -->
+        <section id="view-review" class="view">
+          <div class="card">
+            <h3>Quick Review 3–5 min</h3>
+            <div class="row">
+              <button id="qrStart">Start 3 min</button>
+              <button id="qrStart5">Start 5 min</button>
+              <span id="qrTimer">00:00</span>
+            </div>
+            <div id="qrArea" class="activity"></div>
+          </div>
+        </section>
+
+        <!-- Exam -->
+        <section id="view-exam" class="view">
+          <div class="card">
+            <h3>Weekly Exam</h3>
+            <p id="examIntro">20 items due this week. Score to earn a badge.</p>
+            <div class="row">
+              <button id="examStart">Start Exam</button>
+              <span id="examScore">0</span>
+            </div>
+            <div id="examArea" class="activity"></div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="view-settings" class="view">
+          <div class="card">
+            <h3>Profile</h3>
+            <label class="line">
+              <span>Name</span>
+              <input id="profileName" placeholder="Your name" />
+            </label>
+            <label class="line">
+              <span>Mascot image</span>
+              <input id="mascotFile" type="file" accept="image/*" />
+            </label>
+            <label class="line">
+              <span>Learning language</span>
+              <select id="uiLang">
+                <option value="en">English first</option>
+                <option value="fr">French UI</option>
+              </select>
+            </label>
+            <label class="line">
+              <span>Voice</span>
+              <select id="voiceSelect"></select>
+            </label>
+            <label class="line">
+              <span>Silence mode</span>
+              <input id="muteCheckbox" type="checkbox" />
+            </label>
+            <div class="row">
+              <button id="exportData">Export data</button>
+              <button id="importData">Import data</button>
+              <input id="importFile" type="file" accept="application/json" hidden />
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Data</h3>
+            <button id="factoryReset" class="danger">Factory reset</button>
+            <small>All local data will be removed.</small>
+          </div>
+
+          <footer class="footer">
+            <small>All audio is generated with your browser TTS. Subtitles displayed for every playback. Speech recognition used when supported by the browser.</small>
+          </footer>
+        </section>
+      </main>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+    <script src="app.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js');
+      }
+    </script>
+  </body>
+</html>
